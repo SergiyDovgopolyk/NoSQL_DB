@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    hostname: rabbitmq
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    networks:
+      - mynetwork
+
+  producer:
+    build:
+      context: .
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./producer.py:/app/producer.py
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - mynetwork
+
+  consumer:
+    build:
+      context: .
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./consumer.py:/app/consumer.py
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge

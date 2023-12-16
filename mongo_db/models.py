@@ -6,7 +6,7 @@ connect(
     username='admin',
     password='51252cenia',
     host='cluster0.xvs4vtf.mongodb.net',
-    port=27017,  # Порт (зазвичай 27017)
+    port=27017,
     authentication_source='admin',
     retryWrites=True,
     w='majority'
